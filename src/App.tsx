@@ -13,10 +13,12 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { homeOutline, calendarOutline, personOutline } from 'ionicons/icons';
 import HomeFeed from './pages/HomeFeed';
-import Tab2 from './pages/Tab2';
+import Bookings from './pages/Bookings';
 import Tab3 from './pages/Tab3';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import VenueManagement from './pages/VenueManagement';
+import SportsManagement from './pages/SportsManagement';
 import apiService from './services/api';
 
 /* Core CSS required for Ionic components to work properly */
@@ -85,10 +87,16 @@ const App: React.FC = () => {
                     <HomeFeed />
                   </Route>
                   <Route exact path="/tabs/bookings">
-                    <Tab2 />
+                    <Bookings />
                   </Route>
                   <Route path="/tabs/profile">
                     <Tab3 />
+                  </Route>
+                  <Route exact path="/tabs/venue-management">
+                    <VenueManagement />
+                  </Route>
+                  <Route exact path="/tabs/sports-management">
+                    <SportsManagement />
                   </Route>
                   <Route exact path="/tabs">
                     <Redirect to="/tabs/home" />
