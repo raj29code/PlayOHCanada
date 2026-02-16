@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {
   Sport,
+  CreateSportDto,
+  UpdateSportDto,
   ScheduleResponseDto,
   Booking,
   JoinScheduleDto,
@@ -9,6 +11,16 @@ import {
   AuthResponse,
   UserResponse,
   ApiError,
+  CreateScheduleDto,
+  UpdateScheduleDto,
+  VenueStatisticsDto,
+  RenameVenueDto,
+  VenueRenameResultDto,
+  MergeVenuesDto,
+  VenueMergeResultDto,
+  VenueDeleteResultDto,
+  ValidateVenueDto,
+  VenueValidationDto,
 } from '../types/api';
 import APP_CONFIG from '../config/app.config';
 
@@ -107,8 +119,17 @@ class ApiService {
     return response.data;
   }
 
-  logout(): void {
-    this.clearAuth();
+  async logout(): Promise<void> {
+    try {
+      // Call the logout API endpoint
+      await this.api.post('/Auth/logout');
+    } catch (error) {
+      console.error('Logout API call failed:', error);
+      // Continue with local cleanup even if API call fails
+    } finally {
+      // Always clear local authentication data
+      this.clearAuth();
+    }
   }
 
   // ==================== Schedules Methods ====================
@@ -119,13 +140,41 @@ class ApiService {
     startDate?: string;
     endDate?: string;
     includeParticipants?: boolean;
+    timezoneOffsetMinutes?: number;
   }): Promise<ScheduleResponseDto[]> {
     const response = await this.api.get('/Schedules', { params });
     return response.data;
   }
 
-  async getScheduleById(id: number): Promise<ScheduleResponseDto> {
-    const response = await this.api.get(`/Schedules/${id}`);
+  async getScheduleById(id: number, timezoneOffsetMinutes?: number, includeParticipants: boolean = true): Promise<ScheduleResponseDto> {
+    const params: any = { includeParticipants };
+    if (timezoneOffsetMinutes !== undefined) {
+      params.timezoneOffsetMinutes = timezoneOffsetMinutes;
+    }
+    const response = await this.api.get(`/Schedules/${id}`, { params });
+    return response.data;
+  }
+
+  async createSchedule(data: CreateScheduleDto): Promise<ScheduleResponseDto[]> {
+    const response = await this.api.post('/Schedules', data);
+    return response.data;
+  }
+
+  async updateSchedule(id: number, data: UpdateScheduleDto): Promise<void> {
+    await this.api.put(`/Schedules/${id}`, data);
+  }
+
+  async deleteSchedule(id: number): Promise<void> {
+    await this.api.delete(`/Schedules/${id}`);
+  }
+
+  async deleteMySchedules(): Promise<void> {
+    await this.api.delete('/Schedules/my-schedules');
+  }
+
+  async getVenues(timezoneOffsetMinutes?: number): Promise<any[]> {
+    const params = timezoneOffsetMinutes !== undefined ? { timezoneOffsetMinutes } : {};
+    const response = await this.api.get('/Schedules/venues', { params });
     return response.data;
   }
 
@@ -141,6 +190,19 @@ class ApiService {
     return response.data;
   }
 
+  async createSport(data: CreateSportDto): Promise<Sport> {
+    const response = await this.api.post('/Sports', data);
+    return response.data;
+  }
+
+  async updateSport(id: number, data: UpdateSportDto): Promise<void> {
+    await this.api.put(`/Sports/${id}`, data);
+  }
+
+  async deleteSport(id: number): Promise<void> {
+    await this.api.delete(`/Sports/${id}`);
+  }
+
   // ==================== Bookings Methods ====================
 
   async joinSchedule(data: JoinScheduleDto): Promise<Booking> {
@@ -148,8 +210,15 @@ class ApiService {
     return response.data;
   }
 
-  async getMyBookings(): Promise<Booking[]> {
-    const response = await this.api.get('/Bookings/my-bookings');
+  async getMyBookings(timezoneOffsetMinutes?: number, includeAll?: boolean): Promise<any[]> {
+    const params: any = {};
+    if (timezoneOffsetMinutes !== undefined) {
+      params.timezoneOffsetMinutes = timezoneOffsetMinutes;
+    }
+    if (includeAll !== undefined) {
+      params.includeAll = includeAll;
+    }
+    const response = await this.api.get('/Bookings/my-bookings', { params });
     return response.data;
   }
 
@@ -164,6 +233,38 @@ class ApiService {
 
   async getScheduleBookings(scheduleId: number): Promise<Booking[]> {
     const response = await this.api.get(`/Bookings/schedule/${scheduleId}`);
+    return response.data;
+  }
+
+  // ==================== Venue Management Methods ====================
+
+  async getVenueSuggestions(): Promise<string[]> {
+    const response = await this.api.get('/Venues/suggestions');
+    return response.data;
+  }
+
+  async getVenueStatistics(): Promise<VenueStatisticsDto[]> {
+    const response = await this.api.get('/Venues/statistics');
+    return response.data;
+  }
+
+  async renameVenue(data: RenameVenueDto): Promise<VenueRenameResultDto> {
+    const response = await this.api.put('/Venues/rename', data);
+    return response.data;
+  }
+
+  async mergeVenues(data: MergeVenuesDto): Promise<VenueMergeResultDto> {
+    const response = await this.api.post('/Venues/merge', data);
+    return response.data;
+  }
+
+  async deleteVenue(venueName: string): Promise<VenueDeleteResultDto> {
+    const response = await this.api.delete(`/Venues/${encodeURIComponent(venueName)}`);
+    return response.data;
+  }
+
+  async validateVenue(data: ValidateVenueDto): Promise<VenueValidationDto> {
+    const response = await this.api.post('/Venues/validate', data);
     return response.data;
   }
 }

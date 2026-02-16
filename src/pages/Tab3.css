@@ -1,0 +1,165 @@
+/* Profile Container */
+.profile-container {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 40px;
+  text-align: center;
+}
+
+.loading-container ion-spinner {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+}
+
+/* Error State */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 40px;
+  text-align: center;
+}
+
+.error-state ion-button {
+  margin-top: 16px;
+}
+
+/* Profile Header Card */
+.profile-header-card {
+  margin-bottom: 16px;
+}
+
+.profile-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  font-size: 80px;
+}
+
+.profile-avatar ion-icon {
+  font-size: 80px;
+  width: 100%;
+  height: 100%;
+}
+
+.profile-header-info {
+  flex: 1;
+}
+
+.profile-header-info h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.profile-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.profile-badges ion-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.profile-badges ion-badge ion-icon {
+  font-size: 14px;
+}
+
+/* Profile Items */
+.profile-item {
+  --padding-start: 0;
+  margin: 16px 0;
+}
+
+.profile-item ion-icon {
+  margin-right: 16px;
+  font-size: 24px;
+}
+
+.profile-label {
+  font-size: 12px;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.profile-item h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ion-text-color);
+}
+
+/* Logout Section */
+.logout-section {
+  margin: 24px 0;
+}
+
+.logout-button {
+  margin: 16px 0;
+  --border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Card Styling */
+ion-card {
+  margin: 0 0 16px 0;
+  border-radius: 12px;
+}
+
+ion-card-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+  .profile-container {
+    padding: 8px;
+  }
+
+  .profile-avatar {
+    width: 64px;
+    height: 64px;
+    font-size: 64px;
+  }
+
+  .profile-avatar ion-icon {
+    font-size: 64px;
+  }
+
+  .profile-header-info h2 {
+    font-size: 20px;
+  }
+
+  .profile-badges ion-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+}
