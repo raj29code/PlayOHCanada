@@ -5,7 +5,7 @@ export const APP_CONFIG = {
   APP_SHORT_NAME: 'PlayOH',
   
   // API Configuration
-  API_BASE_URL: 'https://localhost:7063/api',
+  API_BASE_URL: import.meta.env.VITE_API_URL || 'https://localhost:7063/api',
   
   // Validation Rules
   VALIDATION: {
